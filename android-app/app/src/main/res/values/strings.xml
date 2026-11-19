@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">EMV HCE Card</string>
+    <string name="service_desc">EMV Card Simulator (lab)</string>
+    <string name="aid_group_desc">Payment</string>
+    <string name="ready">Ready. Hold the phone near a contactless reader (tap-to-pay). The simulated card answers as a payment application.</string>
+    <string name="no_nfc">This device has no NFC.</string>
+    <string name="nfc_off">NFC is off. Enable it, then tap a reader. Keep the screen on while tapping.</string>
+</resources>

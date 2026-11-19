@@ -1,0 +1,38 @@
+name: Build APK
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Build simulator library (applets + host API)
+        run: ./gradlew -p lib build -x test --console=plain
+
+      - name: Copy library jar into the app
+        run: |
+          mkdir -p android-app/app/libs
+          cp lib/build/libs/*.jar android-app/app/libs/
+
+      - name: Build debug APK
+        run: ./gradlew -p android-app assembleDebug --console=plain
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: emv-hce-card-debug-apk
+          path: android-app/app/build/outputs/apk/debug/*.apk

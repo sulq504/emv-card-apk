@@ -1,0 +1,30 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.emvlab.hcecard'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId "com.emvlab.hcecard"
+        minSdk 26
+        targetSdk 35
+        versionCode 1
+        versionName "0.1"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    lint {
+        abortOnError false
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.klinec:jcardsim:latest.release'
+}
