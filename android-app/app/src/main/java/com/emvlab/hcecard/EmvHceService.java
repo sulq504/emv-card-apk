@@ -1,6 +1,6 @@
 package com.emvlab.hcecard;
 
-import android.nfc.cardmode.HostApduService;
+import android.nfc.cardemulation.HostApduService;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -11,9 +11,7 @@ public class EmvHceService extends HostApduService {
     private static final String TAG = "EmvHceCard";
     private static EmvCard card = null;
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
+    private static void ensureCard() throws Exception {
         synchronized (EmvHceService.class) {
             if (card == null) {
                 card = new EmvCard(EmvCard.PROTOCOL_CONTACTLESS);
@@ -25,8 +23,19 @@ public class EmvHceService extends HostApduService {
     }
 
     @Override
+    public void onCreate() {
+        super.onCreate();
+        try {
+            ensureCard();
+        } catch (Throwable t) {
+            Log.e(TAG, "Card personalization failed", t);
+        }
+    }
+
+    @Override
     public byte[] processCommandApdu(byte[] commandApdu, Bundle extras) {
         try {
+            ensureCard();
             byte[] response = card.transmit(commandApdu);
             Log.i(TAG, "C-APDU: " + toHex(commandApdu) + "  R-APDU: " + toHex(response));
             return response;
